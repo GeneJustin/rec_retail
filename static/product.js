@@ -18,6 +18,8 @@ async function loadProduct() {
 async function loadRecommendation() {
     const id = window.location.pathname.split('/').pop()
 
+    localStorage.setItem('lastprod', id)
+
     const response = await fetch(`/api/rec/${id}`)
     const data = await response.json()
 
@@ -39,6 +41,11 @@ async function loadRecommendation() {
 
         container.appendChild(card)
     })
+
+}
+
+document.getElementById('back').onclick = () =>{
+    window.location.href = '/';
 }
 
 loadProduct()
