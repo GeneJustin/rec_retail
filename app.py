@@ -57,9 +57,28 @@ def info(idx):
         prod.to_dict('records')
     )
 
+@app.route('/api/mainrec/<int:idx>')
+def recmp(idx):
+    prod = df[df['product_id']==idx]
+    if prod.empty:
+        return jsonify({
+            'error': 'Product not found'
+        }), 404
     
+    index = prod.index[0]
+    
+    hasil = list(enumerate(cosin[index]))
+    hasil = sorted(hasil, key=lambda x:x[1], reverse=True)
 
+    rec = []
 
+    for i, j in hasil:
+        predik = df.iloc[i].to_dict()
+        predik['similarity'] = float(j)
+        rec.append(predik)
 
+    return jsonify(rec)
+
+    
 if __name__ == '__main__':
     app.run(debug=True)
