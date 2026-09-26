@@ -1,5 +1,13 @@
 async function tes() {
-    const response = await fetch('/item')
+
+    let url = '/item'
+
+    let lastprod = localStorage.getItem('lastprod')
+    if (lastprod){
+        url = `/api/mainrec/${lastprod}`
+    }
+
+    const response = await fetch(url)
     const data = await response.json()
 
     const search = document.getElementById('search')
@@ -7,8 +15,8 @@ async function tes() {
     const category = document.getElementById('category')
     const container = document.getElementById('tes')
 
-    const brands = [...new Set(data.map(i => i.brand))]
-    const categories = [...new Set(data.map(i => i.category))]
+    const brands = [...new Set(data.map(i=>i.brand))]
+    const categories = [...new Set(data.map(i=>i.category))]
 
     brands.sort().forEach(i => {
         const option = document.createElement('option')
